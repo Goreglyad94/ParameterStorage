@@ -63,6 +63,8 @@
   <ItemGroup>
     <Compile Include="Cmd.cs" />
     <Compile Include="Data\DataBaseContext\ParameterStorageDbContext.cs" />
+    <Compile Include="Infrastructure\Commands\Base\Command.cs" />
+    <Compile Include="Models\ModelsDb\DataBaseUnload.cs" />
     <Compile Include="Models\ParameterStorageDto\FamilyInstanceDto.cs" />
     <Compile Include="Models\ParameterStorageDto\FamilyTypeDto.cs" />
     <Compile Include="Models\ParameterStorageDto\ModelDto.cs" />
@@ -76,12 +78,12 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\Base\ViewModel.cs" />
+    <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="Views\Windows\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Infrastructure\" />
     <Folder Include="Services\" />
   </ItemGroup>
   <ItemGroup>
@@ -91,7 +93,6 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
