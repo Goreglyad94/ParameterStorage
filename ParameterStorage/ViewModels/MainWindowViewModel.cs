@@ -1,4 +1,5 @@
-﻿using ParameterStorage.Models.ModelsDb;
+﻿using ParameterStorage.Infrastructure.Commands;
+using ParameterStorage.Models.ModelsDb;
 using ParameterStorage.Models.ParameterStorageDto;
 using ParameterStorage.ViewModels.Base;
 using System;
@@ -10,6 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
+using System.Windows.Input;
 
 namespace ParameterStorage.ViewModels
 {
@@ -22,22 +24,55 @@ namespace ParameterStorage.ViewModels
             ProjectListDto = dataBaseUnload.GetProjects();
             ProjectList = CollectionViewSource.GetDefaultView(ProjectListDto);
             ProjectList.Refresh();
-            Title = "GGGGG";
+            #region Комманды
+            DeleteProjectCommand = new RelayCommand(OnDeleteProjectCommandExecutde, CanDeleteProjectCommandExecute);
+            AddNewProjectCommand = new RelayCommand(OnAddNewProjectCommandExecutde, CanAddNewProjectCommandExecute);
+            #endregion
         }
+        /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+        #region Комманты
+        #region Удаление проекта из ListBox
+        public ICommand DeleteProjectCommand { get; set; }
+
+        private void OnDeleteProjectCommandExecutde(object p)
+        {
+            dataBaseUnload.RemoveProject(p as ProjectDto);
+            ProjectListDto = dataBaseUnload.GetProjects();
+            ProjectList = CollectionViewSource.GetDefaultView(ProjectListDto);
+            ProjectList.Refresh();
+        }
+        private bool CanDeleteProjectCommandExecute(object p) => true;
+        #endregion
+
+        #region Команда добавления нового проекта
+        public ICommand AddNewProjectCommand { get; set; }
+
+        private void OnAddNewProjectCommandExecutde(object p)
+        {
+            if (NewProjectName != null && NewProjectName != "")
+                dataBaseUnload.AddProject(new ProjectDto() { ProjectName = NewProjectName });
+            else
+                MessageBox.Show("Статус", "Введите имя проекта");
+
+            ProjectListDto = dataBaseUnload.GetProjects();
+            ProjectList = CollectionViewSource.GetDefaultView(ProjectListDto);
+            ProjectList.Refresh();
+        }
+        private bool CanAddNewProjectCommandExecute(object p) => true;
+        #endregion
+        /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+
+
+        #endregion
 
         #region Заголовок окна
-        private string _Title;
+        private string newProjectName;
 
-        public string Title
+        public string NewProjectName
         {
-            get => _Title;
-            set
-            {
-                //if (Equals(_Title, value)) return;
-                //_Title = value;
-                //OnPropertyChanged();
-                Set(ref _Title, value);
-            }
+            get => newProjectName;
+            set => Set(ref newProjectName, value);
+            
         }
         #endregion
         

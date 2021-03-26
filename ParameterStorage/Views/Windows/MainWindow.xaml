@@ -6,26 +6,37 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ParameterStorage.Views.Windows"
              mc:Ignorable="d" 
-             Title="{Binding Title}"
              Height="450" Width="800">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
+            <ColumnDefinition Width="200"/>
             <ColumnDefinition/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="40"/>
+            <RowDefinition Height="25"/>
             <RowDefinition/>
             <RowDefinition Height="40"/>
         </Grid.RowDefinitions>
 
-        <ListBox Grid.Column="0" Grid.Row="1" ItemsSource="{Binding ProjectList}">
-            <ListBox.ContextMenu>
-                <ContextMenu>
-                    <MenuItem Header="Delete" Command="{Binding DataContext.DeleteProject, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" CommandParameter="{Binding }"/>
-                </ContextMenu>
-            </ListBox.ContextMenu>
+        <DockPanel Grid.Column="0" Grid.Row="0">
+            <TextBox MinWidth="180" Text="{Binding NewProjectName}" DockPanel.Dock="Left"/>
+            <Button Width="20" Content="+" Command="{Binding AddNewProjectCommand}" DockPanel.Dock="Right" HorizontalAlignment="Right"/>
+        </DockPanel>
+        
+        <ListBox Grid.Column="0" Grid.Row="1" Grid.RowSpan="2" ItemsSource="{Binding ProjectList}">
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="ListBoxItem">
+                    <Setter Property="Tag" Value="{Binding DataContext, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListBox}}}" />
+                    <Setter Property="ContextMenu">
+                        <Setter.Value>
+                            <ContextMenu>
+                                <MenuItem Header="Delete" Command="{Binding PlacementTarget.Tag.DeleteProjectCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}" CommandParameter="{Binding}" />
+                            </ContextMenu>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </ListBox.ItemContainerStyle>
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <DockPanel>
