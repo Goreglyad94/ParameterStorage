@@ -20,7 +20,7 @@ namespace ParameterStorage
         public Result Execute(ExternalCommandData commandData, ref string message, ElementSet elements)
         {
             ParameterStorageDbContext contextPaStorage = new ParameterStorageDbContext();
-            contextPaStorage.Database.Connection.ConnectionString = serverName;
+            contextPaStorage.Database.Connection.ConnectionString = serverName; 
 
             ProjectDto PAproject = new ProjectDto() { ProjectName = "1044 Petra Alexeeva" };
             contextPaStorage.Projects.Add(PAproject);
