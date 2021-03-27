@@ -1,4 +1,5 @@
 ﻿using ParameterStorage.Infrastructure.Commands;
+using ParameterStorage.Models;
 using ParameterStorage.Models.ModelsDb;
 using ParameterStorage.Models.ParameterStorageDto;
 using ParameterStorage.ViewModels.Base;
@@ -17,7 +18,8 @@ namespace ParameterStorage.ViewModels
 {
     internal class MainWindowViewModel : ViewModel
     {
-        DataBaseUnload dataBaseUnload = new DataBaseUnload();
+        DataBaseProjects dataBaseUnload = new DataBaseProjects();
+        FileSystemClass getModelsPath = new FileSystemClass();
         List<ProjectDto> ProjectListDto { get; set; }
         public MainWindowViewModel()
         {
@@ -103,7 +105,8 @@ namespace ParameterStorage.ViewModels
         public ICommand AddModelsCommand { get; set; }
         private void OnAddModelsCommandExecutde(object p)
         {
-            
+            getModelsPath.GetModelsPath();
+
         }
         private bool CanAddModelsCommandExecute(object p) => true;
         #endregion

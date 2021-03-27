@@ -66,7 +66,9 @@
     <Compile Include="Infrastructure\Commands\Base\Command.cs" />
     <Compile Include="Infrastructure\Commands\RelayCommand.cs" />
     <Compile Include="Models\FileSystemClass.cs" />
-    <Compile Include="Models\ModelsDb\DataBaseUnload.cs" />
+    <Compile Include="Models\ModelsDb\DataBaseContext.cs" />
+    <Compile Include="Models\ModelsDb\DataBaseModels.cs" />
+    <Compile Include="Models\ModelsDb\DataBaseProjects.cs" />
     <Compile Include="Models\ParameterStorageDto\FamilyInstanceDto.cs" />
     <Compile Include="Models\ParameterStorageDto\FamilyTypeDto.cs" />
     <Compile Include="Models\ParameterStorageDto\ModelDto.cs" />

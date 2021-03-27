@@ -9,15 +9,8 @@ using System.Windows;
 
 namespace ParameterStorage.Models.ModelsDb
 {
-    class DataBaseUnload
+    class DataBaseProjects : DataBaseContext
     {
-        ParameterStorageDbContext context;
-        public DataBaseUnload()
-        {
-            context = new ParameterStorageDbContext();
-            context.Database.Connection.ConnectionString = @"Data Source=WS-176\SQLBIMDBENT;Initial Catalog=RvtMetadata;integrated security=True;MultipleActiveResultSets=True";
-        }
-
         /// <summary> Получить список проектов из БД </summary>
         public List<ProjectDto> GetProjects()
         {
