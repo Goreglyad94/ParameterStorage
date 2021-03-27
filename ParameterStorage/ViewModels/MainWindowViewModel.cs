@@ -18,18 +18,20 @@ namespace ParameterStorage.ViewModels
 {
     internal class MainWindowViewModel : ViewModel
     {
-        DataBaseProjects dataBaseUnload = new DataBaseProjects();
+        DataBaseProjects dataBaseProject = new DataBaseProjects();
+        DataBaseModels dataBaseModels = new DataBaseModels();
         FileSystemClass getModelsPath = new FileSystemClass();
         List<ProjectDto> ProjectListDto { get; set; }
         public MainWindowViewModel()
         {
-            ProjectListDto = dataBaseUnload.GetProjects();
+            ProjectListDto = dataBaseProject.GetProjects();
             ProjectList = CollectionViewSource.GetDefaultView(ProjectListDto);
             ProjectList.Refresh();
             #region Комманды
             DeleteProjectCommand = new RelayCommand(OnDeleteProjectCommandExecutde, CanDeleteProjectCommandExecute);
             AddNewProjectCommand = new RelayCommand(OnAddNewProjectCommandExecutde, CanAddNewProjectCommandExecute);
             AddModelsCommand = new RelayCommand(OnAddModelsCommandExecutde, CanAddModelsCommandExecute);
+            DeleteAllModelsCommand = new RelayCommand(OnDeleteAllModelsCommandExecutde, CanDeleteAllModelsCommandExecute);
             #endregion
         }
         /*listBox список проектов~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
@@ -39,8 +41,8 @@ namespace ParameterStorage.ViewModels
 
         private void OnDeleteProjectCommandExecutde(object p)
         {
-            dataBaseUnload.RemoveProject(p as ProjectDto);
-            ProjectListDto = dataBaseUnload.GetProjects();
+            dataBaseProject.RemoveProject(p as ProjectDto);
+            ProjectListDto = dataBaseProject.GetProjects();
             ProjectList = CollectionViewSource.GetDefaultView(ProjectListDto);
             ProjectList.Refresh();
         }
@@ -53,11 +55,11 @@ namespace ParameterStorage.ViewModels
         private void OnAddNewProjectCommandExecutde(object p)
         {
             if (NewProjectName != null && NewProjectName != "")
-                dataBaseUnload.AddProject(new ProjectDto() { ProjectName = NewProjectName });
+                dataBaseProject.AddProject(new ProjectDto() { ProjectName = NewProjectName });
             else
                 MessageBox.Show("Статус", "Введите имя проекта");
 
-            ProjectListDto = dataBaseUnload.GetProjects();
+            ProjectListDto = dataBaseProject.GetProjects();
             ProjectList = CollectionViewSource.GetDefaultView(ProjectListDto);
             ProjectList.Refresh();
         }
@@ -94,6 +96,8 @@ namespace ParameterStorage.ViewModels
             set 
             { 
                 selectedProject = value;
+                ModelList = CollectionViewSource.GetDefaultView(dataBaseModels.GetModels(SelectedProject));
+                ModelList.Refresh();
             }
         }
 
@@ -105,13 +109,36 @@ namespace ParameterStorage.ViewModels
         public ICommand AddModelsCommand { get; set; }
         private void OnAddModelsCommandExecutde(object p)
         {
-            getModelsPath.GetModelsPath();
 
+            dataBaseModels.AddModels(SelectedProject);
+            ModelList = CollectionViewSource.GetDefaultView(dataBaseModels.GetModels(SelectedProject));
+            ModelList.Refresh();
         }
         private bool CanAddModelsCommandExecute(object p) => true;
         #endregion
+
+        #region Удаление всех моделей из проекта
+        public ICommand DeleteAllModelsCommand { get; set; }
+        private void OnDeleteAllModelsCommandExecutde(object p)
+        {
+            dataBaseModels.RemoveModels(SelectedProject);
+            ModelList = CollectionViewSource.GetDefaultView(dataBaseModels.GetModels(SelectedProject));
+            ModelList.Refresh();
+        }
+        private bool CanDeleteAllModelsCommandExecute(object p) => true;
+        #endregion
+        
+
         #endregion
 
+        #region КоллекшенВью для ListBox Models
+        private ICollectionView modelList;
+        public ICollectionView ModelList
+        {
+            get => modelList;
+            set => Set(ref modelList, value);
+        }
+        #endregion
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 

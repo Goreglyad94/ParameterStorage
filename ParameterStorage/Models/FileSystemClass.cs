@@ -22,14 +22,14 @@ namespace ParameterStorage.Models
             dlg.ShowDialog();
             
             List<string> modelPathes = new List<string>();
-            StreamReader f = new StreamReader(dlg.FileName, Encoding.GetEncoding("windows-1251"));
+            StreamReader f = new StreamReader(dlg.FileName, Encoding.UTF8);
             while (!f.EndOfStream)
             {
                 string s = f.ReadLine();
                 modelPathes.Add(s);
             }
             f.Close();
-
+            MessageBox.Show(modelPathes.First());
             return modelPathes;
         }
     }

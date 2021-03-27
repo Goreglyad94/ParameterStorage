@@ -49,7 +49,20 @@
 
         <Button Grid.Column="1" Grid.Row="0" Content="Select .txt file" Command="{Binding AddModelsCommand}"/>
         <GroupBox Margin="5 5 5 5" Header="Модели" Grid.Row="1" Grid.Column="1" Grid.RowSpan="2">
-            <ListBox ItemsSource="{Binding ModelList}" BorderBrush="{x:Null}"/>
+            <ListBox ItemsSource="{Binding ModelList}" BorderBrush="{x:Null}">
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="ListBoxItem">
+                        <Setter Property="Tag" Value="{Binding DataContext, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListBox}}}" />
+                        <Setter Property="ContextMenu">
+                            <Setter.Value>
+                                <ContextMenu>
+                                    <MenuItem Header="Delete all models from project" Command="{Binding PlacementTarget.Tag.DeleteAllModelsCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}" CommandParameter="{Binding}" />
+                                </ContextMenu>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </ListBox.ItemContainerStyle>
+            </ListBox>
         </GroupBox>
     </Grid>
 </Window>
