@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using System.Windows.Forms;
 using System.Windows;
 
 namespace ParameterStorage.Models
@@ -17,19 +17,21 @@ namespace ParameterStorage.Models
         /// <returns></returns>
         public List<string> GetModelsPath()
         {
-            var dlg = new OpenFileDialog();
-            dlg.Multiselect = false;
-            dlg.ShowDialog();
-            
             List<string> modelPathes = new List<string>();
-            StreamReader f = new StreamReader(dlg.FileName, Encoding.UTF8);
-            while (!f.EndOfStream)
+            var dlg = new System.Windows.Forms.OpenFileDialog();
+            dlg.Multiselect = false;
+            var res = dlg.ShowDialog();
+            if(res == DialogResult.OK)
             {
-                string s = f.ReadLine();
-                modelPathes.Add(s);
+                
+                StreamReader f = new StreamReader(dlg.FileName, Encoding.UTF8);
+                while (!f.EndOfStream)
+                {
+                    string s = f.ReadLine();
+                    modelPathes.Add(s);
+                }
+                f.Close();
             }
-            f.Close();
-            MessageBox.Show(modelPathes.First());
             return modelPathes;
         }
     }
