@@ -23,27 +23,33 @@
             <TextBox MinWidth="180" Text="{Binding NewProjectName}" DockPanel.Dock="Left"/>
             <Button Width="20" Content="+" Command="{Binding AddNewProjectCommand}" DockPanel.Dock="Right" HorizontalAlignment="Right"/>
         </DockPanel>
-        
-        <ListBox Grid.Column="0" Grid.Row="1" Grid.RowSpan="2" ItemsSource="{Binding ProjectList}">
-            <ListBox.ItemContainerStyle>
-                <Style TargetType="ListBoxItem">
-                    <Setter Property="Tag" Value="{Binding DataContext, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListBox}}}" />
-                    <Setter Property="ContextMenu">
-                        <Setter.Value>
-                            <ContextMenu>
-                                <MenuItem Header="Delete" Command="{Binding PlacementTarget.Tag.DeleteProjectCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}" CommandParameter="{Binding}" />
-                            </ContextMenu>
-                        </Setter.Value>
-                    </Setter>
-                </Style>
-            </ListBox.ItemContainerStyle>
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <DockPanel>
-                        <TextBlock Text="{Binding ProjectName}"/>
-                    </DockPanel>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
+        <GroupBox Margin="5 5 0 5" Header="Проекты" Grid.Column="0" Grid.Row="1" Grid.RowSpan="2">
+            <ListBox SelectedItem="{Binding SelectedProject}" BorderBrush="{x:Null}" ItemsSource="{Binding ProjectList}">
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="ListBoxItem">
+                        <Setter Property="Tag" Value="{Binding DataContext, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListBox}}}" />
+                        <Setter Property="ContextMenu">
+                            <Setter.Value>
+                                <ContextMenu>
+                                    <MenuItem Header="Delete" Command="{Binding PlacementTarget.Tag.DeleteProjectCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}" CommandParameter="{Binding}" />
+                                </ContextMenu>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </ListBox.ItemContainerStyle>
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <DockPanel>
+                            <TextBlock Text="{Binding ProjectName}"/>
+                        </DockPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </GroupBox>
+
+        <Button Grid.Column="1" Grid.Row="0" Content="Select .txt file" Command="{Binding AddModelsCommand}"/>
+        <GroupBox Margin="5 5 5 5" Header="Модели" Grid.Row="1" Grid.Column="1" Grid.RowSpan="2">
+            <ListBox ItemsSource="{Binding ModelList}" BorderBrush="{x:Null}"/>
+        </GroupBox>
     </Grid>
 </Window>

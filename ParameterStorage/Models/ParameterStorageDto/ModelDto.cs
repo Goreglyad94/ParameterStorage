@@ -16,5 +16,9 @@ namespace ParameterStorage.Models.ParameterStorageDto
         public virtual ProjectDto ProjectDto { get; set; }
         public virtual ICollection<FamilyInstanceDto> FamiliesInstanceDto { get; set; }
         public virtual ICollection<FamilyTypeDto> FamiliesTypeDto { get; set; }
+        public override string ToString()
+        {
+            return ModelName;
+        }
     }
 }

@@ -18,6 +18,7 @@ namespace ParameterStorage.Models.ModelsDb
             context.Database.Connection.ConnectionString = @"Data Source=WS-176\SQLBIMDBENT;Initial Catalog=RvtMetadata;integrated security=True;MultipleActiveResultSets=True";
         }
 
+        /// <summary> Получить список проектов из БД </summary>
         public List<ProjectDto> GetProjects()
         {
             if (context.Projects != null)
@@ -25,14 +26,11 @@ namespace ParameterStorage.Models.ModelsDb
 
             else return null;
         }
-        public List<ProjectDto> RemoveProject(ProjectDto proj)
+        /// <summary> Удалить проект из БД </summary>
+        public void RemoveProject(ProjectDto proj)
         {
             context.Projects.Remove(proj);
             context.SaveChanges();
-
-            if (context.Projects != null)
-                return context.Projects.ToList();
-            else return null;
         }
 
         public List<ProjectDto> AddProject(ProjectDto proj)

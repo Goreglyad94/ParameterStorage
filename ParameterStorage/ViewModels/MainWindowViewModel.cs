@@ -27,10 +27,11 @@ namespace ParameterStorage.ViewModels
             #region Комманды
             DeleteProjectCommand = new RelayCommand(OnDeleteProjectCommandExecutde, CanDeleteProjectCommandExecute);
             AddNewProjectCommand = new RelayCommand(OnAddNewProjectCommandExecutde, CanAddNewProjectCommandExecute);
+            AddModelsCommand = new RelayCommand(OnAddModelsCommandExecutde, CanAddModelsCommandExecute);
             #endregion
         }
-        /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-        #region Комманты
+        /*listBox список проектов~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+        #region Комманды
         #region Удаление проекта из ListBox
         public ICommand DeleteProjectCommand { get; set; }
 
@@ -60,12 +61,9 @@ namespace ParameterStorage.ViewModels
         }
         private bool CanAddNewProjectCommandExecute(object p) => true;
         #endregion
-        /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-
-
         #endregion
 
-        #region Заголовок окна
+        #region Имя нового проекта проекта
         private string newProjectName;
 
         public string NewProjectName
@@ -75,12 +73,44 @@ namespace ParameterStorage.ViewModels
             
         }
         #endregion
-        
+
+        #region КоллекшенВью для ListBox Projects
         private ICollectionView projectList;
         public ICollectionView ProjectList
         {
             get => projectList;
             set => Set(ref projectList, value);
         }
+        #endregion
+
+        #region SelectedItem листа проектов
+        private ProjectDto selectedProject;
+
+        public ProjectDto SelectedProject
+        {
+            get { return selectedProject; }
+            set 
+            { 
+                selectedProject = value;
+            }
+        }
+
+        #endregion
+
+        /*ListBox список моделей~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+        #region Коммнады
+        #region Добавление списка моделей. Выбор .txt файла
+        public ICommand AddModelsCommand { get; set; }
+        private void OnAddModelsCommandExecutde(object p)
+        {
+            
+        }
+        private bool CanAddModelsCommandExecute(object p) => true;
+        #endregion
+        #endregion
+
+
+        /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+
     }
 }
