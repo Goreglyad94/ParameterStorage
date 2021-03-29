@@ -7,9 +7,9 @@ using System.Text;
 using System.Windows.Forms;
 using System.Windows;
 
-namespace ParameterStorage.Models
+namespace ParameterStorage.Models.FileSystemModel
 {
-    class FileSystemClass
+    class OpenFileModelPathes
     {
         /// <summary>
         /// ShowDialog. Получить список моделей из .txt файла

@@ -6,18 +6,17 @@ using System.Threading.Tasks;
 
 namespace ParameterStorage.Models.ParameterStorageDto
 {
-    class ModelDto
+    class LogDto
     {
         public int Id { get; set; }
-        public string ModelName { get; set; }
-        public string ModelPath { get; set; }
+        public string Date { get; set; }
+        public string LoadTime { get; set; }
+        public string UserName { get; set; }
+        public string ComputerName { get; set; }
+        public string Description { get; set; }
+
         public int ProjectId { get; set; }
 
         public virtual ProjectDto ProjectDto { get; set; }
-        public virtual ICollection<FamilyDto> FamiliesDto { get; set; }
-        public override string ToString()
-        {
-            return ModelName;
-        }
     }
 }

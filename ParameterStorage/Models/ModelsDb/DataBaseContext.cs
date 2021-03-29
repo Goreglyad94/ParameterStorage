@@ -9,7 +9,7 @@ namespace ParameterStorage.Models.ModelsDb
 {
     class DataBaseContext
     {
-        public ParameterStorageDbContext context;
+        protected ParameterStorageDbContext context;
         public DataBaseContext()
         {
             context = new ParameterStorageDbContext();

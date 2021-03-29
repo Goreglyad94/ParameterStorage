@@ -66,22 +66,30 @@
     <Compile Include="Data\DataBaseContext\ParameterStorageDbContext.cs" />
     <Compile Include="Infrastructure\Commands\Base\Command.cs" />
     <Compile Include="Infrastructure\Commands\RelayCommand.cs" />
-    <Compile Include="Models\FileSystemClass.cs" />
+    <Compile Include="Infrastructure\Extentions\ParamtersExtention.cs" />
+    <Compile Include="Models\FileSystemModel\OpenFileModelPathes.cs" />
+    <Compile Include="Models\FileSystemModel\OpenFileSettings.cs" />
     <Compile Include="Models\ModelsDb\DataBaseContext.cs" />
+    <Compile Include="Models\ModelsDb\DataBaseFamilies.cs" />
+    <Compile Include="Models\ModelsDb\DataBaseLogs.cs" />
     <Compile Include="Models\ModelsDb\DataBaseModels.cs" />
+    <Compile Include="Models\ModelsDb\DataBaseParameters.cs" />
     <Compile Include="Models\ModelsDb\DataBaseProjects.cs" />
-    <Compile Include="Models\ParameterStorageDto\FamilyInstanceDto.cs" />
-    <Compile Include="Models\ParameterStorageDto\FamilyTypeDto.cs" />
+    <Compile Include="Models\ParameterStorageDto\FamilyDto.cs" />
+    <Compile Include="Models\ParameterStorageDto\LogDto.cs" />
     <Compile Include="Models\ParameterStorageDto\ModelDto.cs" />
     <Compile Include="Models\ParameterStorageDto\ParameterInstanceDto.cs" />
     <Compile Include="Models\ParameterStorageDto\ParameterTypeDto.cs" />
     <Compile Include="Models\ParameterStorageDto\ProjectDto.cs" />
+    <Compile Include="Models\UnloadSettigsDto\FamilyCategoryDto.cs" />
+    <Compile Include="Models\UnloadSettigsDto\FamilyParameterDto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="RvtExternalEvent\ExEventGetFamiliesAndParameters.cs" />
     <Compile Include="ViewModels\Base\ViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="Views\Windows\MainWindow.xaml.cs">

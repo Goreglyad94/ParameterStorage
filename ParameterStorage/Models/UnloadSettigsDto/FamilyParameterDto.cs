@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ParameterStorageLibrary
+namespace ParameterStorage.Models.UnloadSettigsDto
 {
-    public class Class1
+    class FamilyParameterDto
     {
     }
 }

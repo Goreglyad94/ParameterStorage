@@ -17,9 +17,11 @@ namespace ParameterStorage.Data.DataBaseContext
         }
         public DbSet<ProjectDto> Projects { get; set; }
         public DbSet<ModelDto> Models { get; set; }
-        public DbSet<FamilyInstanceDto> FamilyInstances { get; set; }
-        public DbSet<FamilyTypeDto> FamilyTypes { get; set; }
+        public DbSet<FamilyDto> Families { get; set; }
         public DbSet<ParameterInstanceDto> ParameterInstances { get; set; }
         public DbSet<ParameterTypeDto> ParameterTypes { get; set; }
+
+
+        public DbSet<LogDto> LogsDto { get; set; }
     }
 }

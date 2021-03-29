@@ -12,7 +12,7 @@ namespace ParameterStorage.Models.ParameterStorageDto
         public string ProjectName { get; set; }
 
         public virtual ICollection<ModelDto> ModelsDto { get; set; }
-
+        public virtual ICollection<LogDto> LogsDto { get; set; }
         public override string ToString()
         {
             return ProjectName; 

@@ -25,16 +25,24 @@ namespace ParameterStorage.Models.ModelsDb
             context.Projects.Remove(proj);
             context.SaveChanges();
         }
-
+        /// <summary>
+        /// Создать новый проект
+        /// </summary>
+        /// <param name="proj"></param>
+        /// <returns></returns>
         public List<ProjectDto> AddProject(ProjectDto proj)
         {
+            DataBaseLogs dataBaseLogs = new DataBaseLogs();
             if (context.Projects.Where(x => x.ProjectName == proj.ProjectName).Count() == 0)
             {
                 context.Projects.Add(proj);
                 context.SaveChanges();
 
                 if (context.Projects != null)
+                {
+                    dataBaseLogs.SetNewLog(null, "Проект создан", proj.Id);
                     return context.Projects.ToList();
+                }
                 else return null;
             }
 
@@ -43,7 +51,9 @@ namespace ParameterStorage.Models.ModelsDb
                 MessageBox.Show("Такой проект уже есть", "Статус");
                 return context.Projects.ToList();
             }
-               
+            
+
+
         }
 
     }

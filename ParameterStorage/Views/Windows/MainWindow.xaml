@@ -10,7 +10,7 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="200"/>
-            <ColumnDefinition/>
+            <ColumnDefinition Width="200"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
@@ -64,5 +64,36 @@
                 </ListBox.ItemContainerStyle>
             </ListBox>
         </GroupBox>
+
+        <TabControl Margin="0 0 5 5" Grid.Row="0" Grid.Column="2" Grid.RowSpan="3" BorderBrush="{x:Null}" >
+            <TabItem Header="Новая выгрузка" BorderBrush="#d6e0e6">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition Height="20"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+
+                    <GroupBox Margin="5 5 2 5" Header="Категории" Grid.Row="0" Grid.Column="0" Grid.RowSpan="2">
+                        <ListBox ItemsSource="{Binding CategoryList}"/>
+                    </GroupBox>
+
+                    <GroupBox Margin="2 5 5 5" Header="Параметры" Grid.Row="0" Grid.Column="1" Grid.RowSpan="2">
+                        <ListBox ItemsSource="{Binding ParameterList}"/>
+                    </GroupBox>
+
+                    <Button Grid.Column="0" Grid.Row="2" Content="Выбрать файл настроек" Command="{Binding SelectSettingsFileCommand}"/>
+                    <Button Grid.Column="1" Grid.Row="2" Content="Выгрузить в базу данных" Command="{Binding UploadToDBFileCommand}"/>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Логи" BorderBrush="#d6e0e6">
+
+            </TabItem>
+        </TabControl>
+        
     </Grid>
 </Window>
