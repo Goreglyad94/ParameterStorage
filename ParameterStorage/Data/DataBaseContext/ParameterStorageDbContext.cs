@@ -12,7 +12,6 @@ namespace ParameterStorage.Data.DataBaseContext
     {
         public ParameterStorageDbContext()
         {
-            
             this.Database.Connection.ConnectionString = @"Data Source=WS-176\SQLBIMDBENT;Initial Catalog=RvtMetadata;integrated security=True;MultipleActiveResultSets=True";
         }
         public DbSet<ProjectDto> Projects { get; set; }

@@ -13,8 +13,8 @@ namespace ParameterStorage.Models.ParameterStorageDto
         public string ModelPath { get; set; }
         public int ProjectId { get; set; }
 
-        public virtual ProjectDto ProjectDto { get; set; }
-        public virtual ICollection<FamilyDto> FamiliesDto { get; set; }
+        public virtual ProjectDto Project { get; set; }
+        public virtual ICollection<FamilyDto> Families { get; set; }
         public override string ToString()
         {
             return ModelName;

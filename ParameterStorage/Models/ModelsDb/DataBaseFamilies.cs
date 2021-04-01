@@ -16,6 +16,11 @@ namespace ParameterStorage.Models.ModelsDb
             return family;
         }
 
+        public async void AddFamiliesAsync(List<FamilyDto> families)
+        {
+            await Task.Run(() => AddFamilies(families));
+        }
+
         public void AddFamilies(List<FamilyDto> families)
         {
             context.Families.AddRange(families);
@@ -25,7 +30,11 @@ namespace ParameterStorage.Models.ModelsDb
         public List<FamilyDto> GetFamilyInstances(ModelDto modelDto)
         {
             return context.Families.Where(x => x.ModelId == modelDto.Id).ToList();
-
         }
+
+        public int GetLastUploadIndex(ModelDto modelDto)
+        {
+            return 0;
+        } 
     }
 }

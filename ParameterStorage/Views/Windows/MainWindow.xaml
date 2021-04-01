@@ -86,12 +86,14 @@
                         <ListBox ItemsSource="{Binding ParameterList}"/>
                     </GroupBox>
 
-                    <Button Grid.Column="0" Grid.Row="2" Content="Выбрать файл настроек" Command="{Binding SelectSettingsFileCommand}"/>
+                    <TextBlock Grid.Column="0" Grid.Row="2" Text="{Binding FamilyCount}"/>
                     <Button Grid.Column="1" Grid.Row="2" Content="Выгрузить в базу данных" Command="{Binding UploadToDBFileCommand}"/>
                 </Grid>
             </TabItem>
             <TabItem Header="Логи" BorderBrush="#d6e0e6">
-
+                <DataGrid ItemsSource="{Binding LogsList}">
+                    
+                </DataGrid>
             </TabItem>
         </TabControl>
         

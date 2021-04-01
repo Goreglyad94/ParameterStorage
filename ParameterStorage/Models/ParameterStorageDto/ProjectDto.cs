@@ -11,8 +11,8 @@ namespace ParameterStorage.Models.ParameterStorageDto
         public int Id { get; set; }
         public string ProjectName { get; set; }
 
-        public virtual ICollection<ModelDto> ModelsDto { get; set; }
-        public virtual ICollection<LogDto> LogsDto { get; set; }
+        public virtual ICollection<ModelDto> Models { get; set; }
+        public virtual ICollection<LogDto> Logs { get; set; }
         public override string ToString()
         {
             return ProjectName; 

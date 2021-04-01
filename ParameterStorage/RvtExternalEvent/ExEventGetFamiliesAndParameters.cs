@@ -3,6 +3,7 @@ using Autodesk.Revit.UI;
 using ParameterStorage.Infrastructure.Extentions;
 using ParameterStorage.Models.ModelsDb;
 using ParameterStorage.Models.ParameterStorageDto;
+using ParameterStorage.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -22,8 +23,13 @@ namespace ParameterStorage.RvtExternalEvent
         List<BuiltInCategory> builtInCategories = new List<BuiltInCategory>();
         DataBaseFamilies dataBaseFamilies = new DataBaseFamilies();
         DataBaseParameters dataBaseParameters = new DataBaseParameters();
+        DataBaseLogs GetLogs = new DataBaseLogs();
+        public static ProjectDto ProjectDto;
         public void Execute(UIApplication app)
         {
+            GetLogs.SetNewLog(null, "--", ProjectDto.Id);
+            var stp_watch = new Stopwatch();
+            stp_watch.Start();
 
             Document doc = app.ActiveUIDocument.Document;
 
@@ -31,9 +37,6 @@ namespace ParameterStorage.RvtExternalEvent
             {
                 using (Transaction loadDoc = new Transaction(doc, "Load Link Documents"))
                 {
-                    var stp_watch = new Stopwatch();
-                    //Открытие и загрузка файла
-                    stp_watch.Start();
                     loadDoc.Start();
                     RevitLinkOptions rvtLinkOptions = new RevitLinkOptions(false);
 
@@ -44,92 +47,81 @@ namespace ParameterStorage.RvtExternalEvent
 
 
                     Document docLink = openedDocument.GetLinkDocument();
-
+                    stp_watch.Stop();
+                    GetLogs.SetNewLog(stp_watch.Elapsed.ToString(), "Добавление модели: " + model.ModelName, ProjectDto.Id);
+                    stp_watch.Restart();
+                    stp_watch.Start();
                     /* Получить все экземплярый и записать их в бд */
                     List<Element> instances = FindElements(docLink, GetCategoryFilter(), true).Where(x => x != null).ToList();
-                    List<FamilyDto> FamDto = new List<FamilyDto>();
-
-                    foreach (Element elem in instances)
+                    dataBaseFamilies.AddFamilies(instances.Select(x => new FamilyDto()
                     {
-                        FamilyDto familyDto = new FamilyDto();
-                        familyDto.Categoty = elem.Category.Name;
-                        familyDto.FamilyInstId = elem.Id.IntegerValue;
-                        familyDto.FamilyTypeId = elem.GetTypeId().IntegerValue;
-                        familyDto.ModelId = model.Id;
-                        FamDto.Add(familyDto);
-                    }
-                    dataBaseFamilies.AddFamilies(FamDto);
+                        Categoty = x.Category.Name,
+                        FamilyInstId = x.Id.IntegerValue,
+                        FamilyTypeId = x.GetTypeId().IntegerValue,
+                        ModelId = model.Id
+                    }).ToList());
 
+                    stp_watch.Stop();
+                    GetLogs.SetNewLog(stp_watch.Elapsed.ToString(), "Создание нового списка семейств и запись в БД. Количество семейств: " + instances.Count, ProjectDto.Id);
 
-
-                    #region Какой то код. Удалить если не вспомнишь, зачем он
-                    //foreach (var item in instances)
-                    //{
-                    //    dataBaseFamilies.AddFamily(item);
-                    //}
-                    //stp_watch.Stop();
-                    //MessageBox.Show(stp_watch.Elapsed.TotalSeconds.ToString() + " " + instances.Count());
-
-
-                    //List<ParameterInstanceDto> ParametersInstanceDto = new List<ParameterInstanceDto>();
-                    //var stp_watch = new Stopwatch();
-                    ////Открытие и загрузка файла
-                    //stp_watch.Start();
-
-                    //var ddd = dataBaseFamilies.GetFamilyInstances(model);
-
-                    //foreach (var item in ddd)
-                    //{
-                    //    Element family = docLink.GetElement(new ElementId(item.Id));
-                    //    if (family != null)
-                    //    {
-                    //        foreach (var param in family.Parameters.ToList())
-                    //        {
-                    //            ParameterInstanceDto parameterInstanceDto = new ParameterInstanceDto();
-                    //            parameterInstanceDto.Name = param.Definition.Name;
-                    //            parameterInstanceDto.FamInstanceId = item.Id;
-                    //            parameterInstanceDto.Value = GetParameterValue(param);
-                    //            ParametersInstanceDto.Add(parameterInstanceDto);
-                    //        }
-                    //    }
-                    //}
-                    //stp_watch.Stop();
-                    //var upload_link_model = stp_watch.Elapsed.TotalSeconds;
-                    //MessageBox.Show(ParametersInstanceDto.Count.ToString() + " " + upload_link_model.ToString()); 
-                    #endregion
-
+                    stp_watch.Restart();
+                    stp_watch.Start();
                     var FamlistFroDb = dataBaseFamilies.GetFamilyInstances(model);
                     List<ParameterInstanceDto> ParamsInstList = new List<ParameterInstanceDto>();
                     List<ParameterTypeDto> ParamsTypeList = new List<ParameterTypeDto>();
                     foreach (Element elem in instances)
                     {
-                        foreach (Parameter param in elem.Parameters.ToList())
+                        var famId = FamlistFroDb.Where(x => x.FamilyInstId == elem.Id.IntegerValue).FirstOrDefault().Id;
+
+                        ParamsInstList.AddRange(elem.Parameters.ToList().Select(x => new ParameterInstanceDto()
                         {
-                            ParameterInstanceDto parameterinstancedto = new ParameterInstanceDto();
-                            parameterinstancedto.Name = param.Definition.Name;
-                            parameterinstancedto.FamilyId = FamlistFroDb.Where(x => x.FamilyInstId == elem.Id.IntegerValue).FirstOrDefault().Id;
-                            //parameterinstancedto.value = getparametervalue(param);
-                            ParamsInstList.Add(parameterinstancedto);
-                        }
+                            Name = x.Definition.Name,
+                            FamilyId = famId
+                        }).ToList());
+
+                    }
+                    stp_watch.Stop();
+                    GetLogs.SetNewLog(stp_watch.Elapsed.ToString(), "Создание списка параметров экземпляров. Количество параметров: " + ParamsInstList.Count, ProjectDto.Id);
+                    stp_watch.Restart();
+                    stp_watch.Start();
+
+                    foreach (Element elem in instances)
+                    {
+                        var famId = FamlistFroDb.Where(x => x.FamilyInstId == elem.Id.IntegerValue).FirstOrDefault().Id;
 
                         var elemType = docLink.GetElement(elem.GetTypeId());
+
                         if (elemType != null)
-                        {
-                            foreach (Parameter param in elemType.Parameters.ToList())
+                            ParamsTypeList.AddRange((elemType.Parameters.ToList().Select(x => new ParameterTypeDto()
                             {
-                                ParameterTypeDto parameterTypeDto = new ParameterTypeDto();
-                                parameterTypeDto.Name = param.Definition.Name;
-                                parameterTypeDto.FamilyId = FamlistFroDb.Where(x => x.FamilyInstId == elem.Id.IntegerValue).FirstOrDefault().Id;
-                                ParamsTypeList.Add(parameterTypeDto);
-                            }
-                        }
+                                Name = x.Definition.Name,
+                                FamilyId = famId
+                            }).ToList()));
                     }
+
+                    stp_watch.Stop();
+                    GetLogs.SetNewLog(stp_watch.Elapsed.ToString(), "Создание списка параметров типов. Количество параметров: " + ParamsTypeList.Count, ProjectDto.Id);
+                    stp_watch.Restart();
+                    stp_watch.Start();
+
                     dataBaseParameters.AddParameterInstances(ParamsInstList);
+
+                    stp_watch.Stop();
+                    GetLogs.SetNewLog(stp_watch.Elapsed.ToString(), "Выгрузка параметров экземпляров в БД", ProjectDto.Id);
+                    stp_watch.Restart();
+                    stp_watch.Start();
+
                     dataBaseParameters.AddParameterTypes(ParamsTypeList);
+                    stp_watch.Stop();
+                    GetLogs.SetNewLog(stp_watch.Elapsed.ToString(), "Выгрузка параметров типов в БД", ProjectDto.Id);
+
 
                     loadDoc.RollBack();
                 }
             }
+            stp_watch.Stop();
+
+            //GetLogs.SetNewLog(stp_watch.Elapsed.TotalMinutes.ToString(), "Выгрузка параметров", ProjectDto.Id);
             //TaskDialog.Show("Время выгрузки", upload_link_model.ToString());
         }
 

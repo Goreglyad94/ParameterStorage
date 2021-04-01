@@ -15,9 +15,9 @@ namespace ParameterStorage.Models.ParameterStorageDto
         public int FamilyTypeId { get; set; }
         public int ModelId { get; set; }
 
-        public virtual ModelDto ModelDto { get; set; }
-        public virtual ICollection<ParameterInstanceDto> ParametersInstanceDto { get; set; }
-        public virtual ICollection<ParameterTypeDto> ParametersTypeDto { get; set; }
+        public virtual ModelDto Model { get; set; }
+        public virtual ICollection<ParameterInstanceDto> ParametersInstances { get; set; }
+        public virtual ICollection<ParameterTypeDto> ParametersTypes { get; set; }
 
     }
 }

@@ -12,6 +12,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
@@ -30,12 +31,15 @@ namespace ParameterStorage.ViewModels
         List<ProjectDto> ProjectListDto { get; set; }
         public MainWindowViewModel()
         {
+            DataBaseLogs.ChangeUI += ChangeLogsUI;
             ProjectListDto = dataBaseProject.GetProjects();
             ProjectList = CollectionViewSource.GetDefaultView(ProjectListDto);
             ProjectList.Refresh();
 
             CategoryList = CollectionViewSource.GetDefaultView(openFileSettings.GetCategoryList());
             ProjectList.Refresh();
+
+            
 
             ExEventGetFamiliesAndParameters.CategoryList = openFileSettings.GetCategoryList();
 
@@ -73,13 +77,20 @@ namespace ParameterStorage.ViewModels
         private void OnAddNewProjectCommandExecutde(object p)
         {
             if (NewProjectName != null && NewProjectName != "")
+            {
                 dataBaseProject.AddProject(new ProjectDto() { ProjectName = NewProjectName });
+            }
             else
                 MessageBox.Show("Введите имя проекта", "Ошибка");
 
-            ProjectListDto = dataBaseProject.GetProjects();
-            ProjectList = CollectionViewSource.GetDefaultView(ProjectListDto);
-            ProjectList.Refresh();
+            try
+            {
+                ProjectListDto = dataBaseProject.GetProjects();
+                ProjectList = CollectionViewSource.GetDefaultView(ProjectListDto);
+                ProjectList.Refresh();
+            }
+            catch { }
+                           
         }
         private bool CanAddNewProjectCommandExecute(object p) => true;
         #endregion
@@ -118,7 +129,9 @@ namespace ParameterStorage.ViewModels
                 ExEventGetFamiliesAndParameters.ModelList = ModelDtoList;
                 ModelList = CollectionViewSource.GetDefaultView(ModelDtoList);
                 ModelList.Refresh();
-                
+                LogsList = CollectionViewSource.GetDefaultView(dataBaseLogs.GetLogs(SelectedProject));
+                LogsList.Refresh();
+
             }
         }
 
@@ -195,16 +208,41 @@ namespace ParameterStorage.ViewModels
         private bool CanSelectSettingsFileCommandExecute(object p) => true;
         #endregion
 
-
+        #region Выгрузка параметров в ДБ
         public ICommand UploadToDBFileCommand { get; set; }
         private void OnUploadToDBFileCommandExecutde(object p)
         {
+            ExEventGetFamiliesAndParameters.ProjectDto = SelectedProject;
             externalEventUploadToDb.Raise();
         }
         private bool CanUploadToDBFileCommandExecute(object p) => true;
         #endregion
+        #endregion
+
+        /*GridView Список логов~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+
+        #region Коллекшен вью для списка логов
+        private ICollectionView logsList;
+        public ICollectionView LogsList
+        {
+            get => logsList;
+            set => Set(ref logsList, value);
+        }
+        #endregion
+
+        #region Метод-событие которые обновляет список логов
+        private void ChangeLogsUI(object obj)
+        {
+            if (SelectedProject != null)
+            {
+                LogsList = CollectionViewSource.GetDefaultView(dataBaseLogs.GetLogs(SelectedProject));
+                LogsList.Refresh();
+            }
+        }
+        #endregion
 
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+
 
     }
 }

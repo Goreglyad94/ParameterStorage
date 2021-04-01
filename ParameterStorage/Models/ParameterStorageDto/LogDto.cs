@@ -17,6 +17,6 @@ namespace ParameterStorage.Models.ParameterStorageDto
 
         public int ProjectId { get; set; }
 
-        public virtual ProjectDto ProjectDto { get; set; }
+        public virtual ProjectDto Project { get; set; }
     }
 }

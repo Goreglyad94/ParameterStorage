@@ -9,6 +9,7 @@ namespace ParameterStorage.Models.ModelsDb
 {
     class DataBaseLogs : DataBaseContext
     {
+        public static event Action<object> ChangeUI;
         public void SetNewLog(string loadTime, string dicription, int projectId)
         {
             LogDto newLog = new LogDto();
@@ -22,6 +23,19 @@ namespace ParameterStorage.Models.ModelsDb
 
             context.LogsDto.Add(newLog);
             context.SaveChanges();
+
+            ChangeUI?.Invoke(this);
+        }
+
+
+        public List<LogDto> GetLogs(ProjectDto proj)
+        {
+            if (proj != null)
+            {
+                return context.LogsDto.Where(x => x.ProjectId == proj.Id).ToList();
+            }
+            else
+                return null;
         }
     }
 }
