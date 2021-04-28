@@ -36,17 +36,17 @@ namespace ParameterStorage.ViewModels
             ProjectList = CollectionViewSource.GetDefaultView(ProjectListDto);
             ProjectList.Refresh();
 
-            CategoryList = CollectionViewSource.GetDefaultView(openFileSettings.GetCategoryList());
-            ProjectList.Refresh();
+            //CategoryList = CollectionViewSource.GetDefaultView(openFileSettings.GetCategoryList());
+            //ProjectList.Refresh();
 
             
 
-            ExEventGetFamiliesAndParameters.CategoryList = openFileSettings.GetCategoryList();
+            //ExEventGetFamiliesAndParameters.CategoryList = openFileSettings.GetCategoryList();
 
 
-            ParameterList = CollectionViewSource.GetDefaultView(openFileSettings.GetParametters());
-            ParameterList.Refresh();
-            ExEventGetFamiliesAndParameters.ParamsList = openFileSettings.GetParametters();
+            //ParameterList = CollectionViewSource.GetDefaultView(openFileSettings.GetParametters());
+            //ParameterList.Refresh();
+            //ExEventGetFamiliesAndParameters.ParamsList = openFileSettings.GetParametters();
             #region Комманды
             DeleteProjectCommand = new RelayCommand(OnDeleteProjectCommandExecutde, CanDeleteProjectCommandExecute);
             AddNewProjectCommand = new RelayCommand(OnAddNewProjectCommandExecutde, CanAddNewProjectCommandExecute);
@@ -136,7 +136,6 @@ namespace ParameterStorage.ViewModels
         }
 
         #endregion
-
         /*ListBox список моделей~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         #region Коммнады
         #region Добавление списка моделей. Выбор .txt файла
@@ -178,7 +177,6 @@ namespace ParameterStorage.ViewModels
             set => Set(ref modelList, value);
         }
         #endregion
-
         /*Параметры выгрузки. Список параметров и категорий~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
         #region КоллекшенВью для ListBox Categoty
         private ICollectionView categoryList;
@@ -218,9 +216,7 @@ namespace ParameterStorage.ViewModels
         private bool CanUploadToDBFileCommandExecute(object p) => true;
         #endregion
         #endregion
-
         /*GridView Список логов~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-
         #region Коллекшен вью для списка логов
         private ICollectionView logsList;
         public ICollectionView LogsList
@@ -240,7 +236,6 @@ namespace ParameterStorage.ViewModels
             }
         }
         #endregion
-
         /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 
